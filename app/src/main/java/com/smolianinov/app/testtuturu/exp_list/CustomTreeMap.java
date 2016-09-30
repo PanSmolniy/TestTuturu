@@ -3,8 +3,9 @@ package com.smolianinov.app.testtuturu.exp_list;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
-public class CustomLinkedMap<K, V> extends LinkedHashMap<K, V> {
+public class CustomTreeMap<K, V> extends TreeMap<K, V> {
 
     public V getValue(int i) {
 

@@ -1,6 +1,7 @@
 package com.smolianinov.app.testtuturu;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private JsonParser parser;
+    //private JsonParser parser;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -62,22 +63,52 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        parser = new JsonParser(this);
-        processJsonData();
+      //  parser = new JsonParser(this);
+       // processJsonData();
 
 
     }
 
-    private void processJsonData()
+    /*private void processJsonData()
     {
-        try {
+
+        new AsyncTask<Void, Void, Void>() {
+
+
+            JSONArray[] arr;
+            @Override
+            protected Void doInBackground(Void... unusedParams) {
+                // TODO: do your database stuff
+
+
+
+                try {
+                    arr = parser.parseJson();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+
+                Toast.makeText(getApplicationContext(), "CitiesFrom length is " + arr[0].length() + " " +
+                        "CitiesTo length is " +arr[1].length(), Toast.LENGTH_LONG).show();
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
+
+
+       /* try {
             JSONArray[] arr = parser.parseJson();
             Toast.makeText(this, "CitiesFrom length is " + arr[0].length() + " " +
                     "CitiesTo length is " +arr[1].length(), Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-    }
+        }*/
+    //}*/
 
 
     @Override

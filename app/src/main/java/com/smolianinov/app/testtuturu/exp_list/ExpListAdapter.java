@@ -11,16 +11,21 @@ import android.widget.Toast;
 
 import com.smolianinov.app.testtuturu.R;
 
+import org.json.JSONObject;
+
 import java.util.List;
+import java.util.Map;
 
 public class ExpListAdapter extends BaseExpandableListAdapter {
 
    // private ArrayList<ArrayList<String>> mGroups;
     private Context mContext;
 
-    private CustomLinkedMap<String, List<Object>> stations;
+    //private CustomLinkedMap<String, List<Object>> stations;
+    private CustomTreeMap<String, List<JSONObject>> stations;
 
-    public ExpListAdapter (Context context, CustomLinkedMap<String, List<Object>> stations){
+    public ExpListAdapter (Context context, CustomTreeMap<String, List<JSONObject>> stations
+            /*CustomLinkedMap<String, List<Object>> stations*/){
         mContext = context;
         //mGroups = groups;
         this.stations = stations;
