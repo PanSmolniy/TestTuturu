@@ -2,6 +2,7 @@ package com.smolianinov.app.testtuturu.json_processor;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.smolianinov.app.testtuturu.exp_list.CustomTreeMap;
@@ -13,9 +14,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class JsonParser
 {
@@ -55,7 +59,7 @@ public class JsonParser
 
 
 
-    public JSONArray[] parseJson() throws JSONException {
+    private JSONArray[] parseJson() throws JSONException {
 
         //List<JSONObject> stationsFrom = new ArrayList<>();
         //List<JSONObject> stationsTo = new ArrayList<>();
@@ -70,10 +74,37 @@ public class JsonParser
         citiesFromcitiesTo[0] = citiesFromJSONArr;
         citiesFromcitiesTo[1] = citiesToJSONArr;
 
+        Log.d("CitiesFromLength", citiesFromJSONArr.length()+"");
+        Log.d("CitiesToLength", citiesToJSONArr.length()+"");
+        Log.d("TotalLength", citiesFromJSONArr.length() + citiesToJSONArr.length() + "");
+
+        Set<JSONObject> jsonset = new HashSet<>();
+
+        List<JSONObject> lfrom = new ArrayList<>();
+        List<JSONObject> lto = new ArrayList<>();
+
+        for (int i = 0; i < citiesFromJSONArr.length(); i++)
+        {
+            lfrom.add(citiesFromJSONArr.getJSONObject(i));
+        }
+        for (int i = 0; i < citiesToJSONArr.length(); i++)
+        {
+            lto.add(citiesToJSONArr.getJSONObject(i));
+        }
+
+        jsonset.addAll(lfrom);
+        jsonset.addAll(lto);
+
+        Log.d("SetLength", jsonset.size() + "");
+
         return citiesFromcitiesTo;
     }
 
-    public CustomTreeMap<String, List<JSONObject>> orderData(JSONArray [] arr) throws JSONException {
+
+
+    public CustomTreeMap<String, List<JSONObject>> orderData() throws JSONException {
+
+        JSONArray [] arr = parseJson();
 
         CustomTreeMap<String, List<JSONObject>> result = new CustomTreeMap<>();
 
@@ -83,8 +114,9 @@ public class JsonParser
         //List<JSONObject> countryAndCityFrom = new ArrayList<>();
        // List<JSONObject> countryAndCityTo = new ArrayList<>();
         //JSONArray from = arr[0];
-        //JSONArray to = arr[1];
-        for (int i = 0; i < arr[0].length(); i++)
+        //JSONArray to = arr[1];5bn
+
+        /*for (int i = 0; i < arr[1].length(); i++)
         {
             StringBuilder countryCity = new StringBuilder();
             JSONObject obj = arr[0].getJSONObject(i);
@@ -92,7 +124,35 @@ public class JsonParser
             countryCity.append(", ");
             countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
             result.put(countryCity.toString(), null);
+        }*/
+
+
+        for (int i = 0; i < arr[0].length(); i++)
+        {
+
+            StringBuilder countryCity = new StringBuilder();
+
+            String key = "";
+            List<JSONObject> value = new ArrayList<>();
+
+            JSONObject obj = arr[0].getJSONObject(i);
+            countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
+            countryCity.append(", ");
+            countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
+
+            JSONArray stations = obj.getJSONArray(JsonConstants.STATIONS);
+
+            for (int j = 0; j < stations.length(); j++)
+            {
+                value.add((JSONObject) stations.get(j));
+            }
+
+            key = countryCity.toString();
+
+            result.put(key, value);
         }
+
+
 
         return result;
 

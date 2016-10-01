@@ -10,7 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smolianinov.app.testtuturu.R;
+import com.smolianinov.app.testtuturu.json_processor.JsonConstants;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -105,15 +107,20 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
         //textChild.setText(mGroups.get(groupPosition).get(childPosition));
-       // textChild.setText(stations.getValue(groupPosition).get(childPosition));
+        try {
+            textChild.setText(stations.getValue(groupPosition).get(childPosition).getString(JsonConstants.STATION_NAME));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // textChild.setText(stations.getValue(groupPosition).get(childPosition));
 
-        Button button = (Button)convertView.findViewById(R.id.buttonChild);
+        /*Button button = (Button)convertView.findViewById(R.id.buttonChild);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "button is pressed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         return convertView;
     }

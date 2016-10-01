@@ -76,7 +76,7 @@ public class StationsFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
 
 
-            JSONArray[] arr;
+            //JSONArray[] arr;
             CustomTreeMap<String, List<JSONObject>> stations;
             @Override
             protected Void doInBackground(Void... unusedParams) {
@@ -85,8 +85,8 @@ public class StationsFragment extends Fragment {
 
 
                 try {
-                    arr = parser.parseJson();
-                    stations = parser.orderData(arr);
+                    //arr = parser.parseJson();
+                    stations = parser.orderData();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,8 +99,8 @@ public class StationsFragment extends Fragment {
 
                 initializeListView(v, stations);
 
-                Toast.makeText(getActivity(), "CitiesFrom length is " + arr[0].length() + " " +
-                        "CitiesTo length is " + arr[1].length(), Toast.LENGTH_LONG).show();
+                /*Toast.makeText(getActivity(), "CitiesFrom length is " + arr[0].length() + " " +
+                        "CitiesTo length is " + arr[1].length(), Toast.LENGTH_LONG).show();*/
                 super.onPostExecute(aVoid);
             }
         }.execute();

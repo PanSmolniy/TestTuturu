@@ -1,0 +1,28 @@
+{
+          "countryTitle" : "Австрия",
+          "point" : {
+            "longitude" : 16.36879539489746,
+            "latitude" : 48.20253753662109
+          },
+          "districtTitle" : "",
+          "cityId" : 2352,
+          "cityTitle" : "город Вена",
+          "regionTitle" : "",
+          "stationId" : 10154,
+          "stationTitle" : "International Busterminal, Edbergstarsse 200 A"
+        }
+
+
+        {
+                  "countryTitle" : "Австрия",
+                  "point" : {
+                    "longitude" : 16.36879539489746,
+                    "latitude" : 48.20253753662109
+                  },
+                  "districtTitle" : "",
+                  "cityId" : 2352,
+                  "cityTitle" : "город Вена",
+                  "regionTitle" : "",
+                  "stationId" : 10154,
+                  "stationTitle" : "International Busterminal, Edbergstarsse 200 A"
+                }
