@@ -24,13 +24,62 @@ import java.util.TreeSet;
 public class JsonParser
 {
 
+    public JSONArray StationsFrom;
+    public JSONArray StationsTo;
+
     private Activity activity;
+
 
     public JsonParser(Activity activity) {
         this.activity = activity;
+        try {
+            JSONArray [] arr = parseJson();
+            StationsFrom = arr[0];
+            StationsTo = arr[1];
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public String loadJSONFromAsset() {
+    public CustomTreeMap<String, List<JSONObject>> orderData() throws JSONException {
+
+        JSONArray [] arr = parseJson();
+
+        CustomTreeMap<String, List<JSONObject>> result = new CustomTreeMap<>();
+
+        List<Integer> stationIds = new ArrayList<>();
+        List<Integer> cityIds = new ArrayList<>();
+
+        for (int i = 0; i < arr[0].length(); i++)
+        {
+            StringBuilder countryCity = new StringBuilder();
+
+            String key = "";
+            List<JSONObject> value = new ArrayList<>();
+
+            JSONObject obj = arr[0].getJSONObject(i);
+            countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
+            countryCity.append(", ");
+            countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
+            cityIds.add(obj.getInt(JsonConstants.CITY_ID));
+
+            JSONArray stations = obj.getJSONArray(JsonConstants.STATIONS);
+
+            for (int j = 0; j < stations.length(); j++)
+            {
+                value.add((JSONObject) stations.get(j));
+                stationIds.add(((JSONObject) stations.get(j)).getInt(JsonConstants.STATION_ID));
+            }
+
+            key = countryCity.toString();
+
+            result.put(key, value);
+        }
+        return merge(cityIds, stationIds, arr, result);
+    }
+
+    private String loadJSONFromAsset() {
         String json = null;
         try {
 
@@ -57,8 +106,6 @@ public class JsonParser
 
     }
 
-
-
     private JSONArray[] parseJson() throws JSONException {
 
         //List<JSONObject> stationsFrom = new ArrayList<>();
@@ -74,7 +121,7 @@ public class JsonParser
         citiesFromcitiesTo[0] = citiesFromJSONArr;
         citiesFromcitiesTo[1] = citiesToJSONArr;
 
-        Log.d("CitiesFromLength", citiesFromJSONArr.length()+"");
+       /* Log.d("CitiesFromLength", citiesFromJSONArr.length()+"");
         Log.d("CitiesToLength", citiesToJSONArr.length()+"");
         Log.d("TotalLength", citiesFromJSONArr.length() + citiesToJSONArr.length() + "");
 
@@ -95,67 +142,57 @@ public class JsonParser
         jsonset.addAll(lfrom);
         jsonset.addAll(lto);
 
-        Log.d("SetLength", jsonset.size() + "");
+        Log.d("SetLength", jsonset.size() + "");*/
 
         return citiesFromcitiesTo;
     }
 
+    private CustomTreeMap<String, List<JSONObject>> merge
+            (List<Integer> cityIds, List<Integer> stationIds, JSONArray[] arr, CustomTreeMap<String, List<JSONObject>> map)
+            throws JSONException {
 
-
-    public CustomTreeMap<String, List<JSONObject>> orderData() throws JSONException {
-
-        JSONArray [] arr = parseJson();
-
-        CustomTreeMap<String, List<JSONObject>> result = new CustomTreeMap<>();
-
-        //Country and city name
-        //List<String> keys = new ArrayList<>();
-
-        //List<JSONObject> countryAndCityFrom = new ArrayList<>();
-       // List<JSONObject> countryAndCityTo = new ArrayList<>();
-        //JSONArray from = arr[0];
-        //JSONArray to = arr[1];5bn
-
-        /*for (int i = 0; i < arr[1].length(); i++)
-        {
+        CustomTreeMap<String, List<JSONObject>> result = map;
+        for (int i = 0; i < arr[1].length(); i++) {
             StringBuilder countryCity = new StringBuilder();
-            JSONObject obj = arr[0].getJSONObject(i);
-            countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
-            countryCity.append(", ");
-            countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
-            result.put(countryCity.toString(), null);
-        }*/
-
-
-        for (int i = 0; i < arr[0].length(); i++)
-        {
-
-            StringBuilder countryCity = new StringBuilder();
-
             String key = "";
             List<JSONObject> value = new ArrayList<>();
+            JSONObject obj = arr[1].getJSONObject(i);
 
-            JSONObject obj = arr[0].getJSONObject(i);
             countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
             countryCity.append(", ");
             countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
-
-            JSONArray stations = obj.getJSONArray(JsonConstants.STATIONS);
-
-            for (int j = 0; j < stations.length(); j++)
-            {
-                value.add((JSONObject) stations.get(j));
-            }
-
             key = countryCity.toString();
 
+            if (!cityIds.contains(obj.getInt(JsonConstants.CITY_ID))) {
+
+
+                JSONArray stations = obj.getJSONArray(JsonConstants.STATIONS);
+
+                for (int j = 0; j < stations.length(); j++) {
+                    value.add((JSONObject) stations.get(j));
+                    stationIds.add(((JSONObject) stations.get(j)).getInt(JsonConstants.STATION_ID));
+                }
+
+                result.put(key, value);
+
+
+            } else {
+                value = result.get(key);
+
+                JSONArray stations = obj.getJSONArray(JsonConstants.STATIONS);
+
+                for (int j = 0; j < stations.length(); j++) {
+                    int stationId = stations.getJSONObject(j).getInt(JsonConstants.STATION_ID);
+                    if (!stationIds.contains(stationId)) {
+                        value.add((JSONObject) stations.get(j));
+                    }
+                }
+
+
+            }
             result.put(key, value);
         }
-
-
-
         return result;
-
     }
 
 

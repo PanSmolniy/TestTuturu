@@ -8,8 +8,12 @@ public interface JsonConstants {
 
     String COUNTRY_TITLE = "countryTitle";
     String CITY_TITLE = "cityTitle";
+    String CITY_ID = "cityId";
 
     String STATIONS = "stations";
     String STATION_NAME = "stationTitle";
+    String STATION_ID = "stationId";
+
+
 
 }

@@ -36,6 +36,7 @@ public class StationsFragment extends Fragment {
 
 
         parser = new JsonParser(getActivity());
+
         processJsonData(rootView);
 
 
