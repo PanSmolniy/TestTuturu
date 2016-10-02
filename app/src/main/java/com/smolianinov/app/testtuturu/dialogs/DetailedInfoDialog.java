@@ -1,9 +1,12 @@
-package com.smolianinov.app.testtuturu;
+package com.smolianinov.app.testtuturu.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TextView;
+
+import com.smolianinov.app.testtuturu.R;
 
 public class DetailedInfoDialog extends Dialog
 {
@@ -13,6 +16,8 @@ public class DetailedInfoDialog extends Dialog
     private TextView view2;
     private TextView view3;
     private TextView view4;
+
+
     public DetailedInfoDialog(Context context) {
         super(context);
     }
@@ -24,6 +29,7 @@ public class DetailedInfoDialog extends Dialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.detailed_info_dialog);
 
         view1 = (TextView) findViewById(R.id.station_name);

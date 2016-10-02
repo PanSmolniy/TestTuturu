@@ -8,4 +8,6 @@
     <string name="station_city"><b>City:</b> %s</string>
     <string name="station_region"><b>Region:</b> %s</string>
     <string name="station_country"><b>Country:</b> %s</string>
+
+    <string name="when">When</string>
 </resources>

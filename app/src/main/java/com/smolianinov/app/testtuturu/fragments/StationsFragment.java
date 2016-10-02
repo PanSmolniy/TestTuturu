@@ -1,41 +1,51 @@
 package com.smolianinov.app.testtuturu.fragments;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 
-import com.smolianinov.app.testtuturu.DetailedInfoDialog;
+import com.smolianinov.app.testtuturu.dialogs.ChooseDateDialog;
+import com.smolianinov.app.testtuturu.dialogs.DetailedInfoDialog;
 import com.smolianinov.app.testtuturu.exp_list.CustomTreeMap;
 import com.smolianinov.app.testtuturu.exp_list.ExpListAdapter;
 import com.smolianinov.app.testtuturu.R;
 import com.smolianinov.app.testtuturu.json_processor.JsonConstants;
 import com.smolianinov.app.testtuturu.json_processor.JsonParser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class StationsFragment extends Fragment {
 
     private JsonParser parser;
-    ExpandableListView listView;
+    private ExpandableListView listView;
     private DetailedInfoDialog dialog;
+    private ChooseDateDialog chooseDate;
+    public TextView date;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.stations_chooser_fragment, container, false);
+
+        //date = (TextView) getContext().findViewById(R.id.date_text);
+        date = (TextView) rootView.findViewById(R.id.date_text);
+        chooseDate = new ChooseDateDialog(getActivity(), this);
+        setDateOnClick();
+
         dialog = new DetailedInfoDialog(getContext());
         //initializeListView(rootView, returnStations());
 
@@ -46,6 +56,43 @@ public class StationsFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    private void setDateOnClick() {
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               inflateDateDialog();
+            }
+        });
+    }
+
+    private void inflateDateDialog()
+    {
+
+        /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };*/
+
+        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.choose_date_popup, null);
+        dialogBuilder.setView(dialogView);
+
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();*/
+
+        chooseDate.show();
     }
 
     /*private CustomTreeMap<String, List<Object>> returnStations(CustomTreeMap<String, List<Object>> stations)
