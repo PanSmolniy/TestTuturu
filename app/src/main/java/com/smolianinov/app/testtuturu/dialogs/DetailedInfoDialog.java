@@ -33,18 +33,9 @@ public class DetailedInfoDialog extends Dialog
         setContentView(R.layout.detailed_info_dialog);
 
         view1 = (TextView) findViewById(R.id.station_name);
-
-
         view2 = (TextView) findViewById(R.id.station_city);
-
-
         view3 = (TextView) findViewById(R.id.station_region);
-
-
         view4 = (TextView) findViewById(R.id.station_country);
-
-
-
 
     }
 

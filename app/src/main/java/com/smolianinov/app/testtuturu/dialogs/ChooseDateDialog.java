@@ -16,8 +16,7 @@ import com.smolianinov.app.testtuturu.R;
 import com.smolianinov.app.testtuturu.fragments.StationsFragment;
 
 
-public class ChooseDateDialog extends Dialog implements View.OnClickListener
-{
+public class ChooseDateDialog extends Dialog implements View.OnClickListener {
     private StationsFragment fragment;
 
     public ChooseDateDialog(Context context, StationsFragment fragment) {
@@ -42,14 +41,14 @@ public class ChooseDateDialog extends Dialog implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case  R.id.set_date_tw : {
-                Log.d("Help", "Please");
+            case R.id.set_date_tw: {
                 DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
-                String res = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth()+1) +
+                String res = datePicker.getDayOfMonth() + "/" + (datePicker.getMonth() + 1) +
                         "/" + datePicker.getYear();
                 fragment.date.setText(res);
                 dismiss();
-            } break;
+            }
+            break;
 
             case R.id.discard_tw:
 

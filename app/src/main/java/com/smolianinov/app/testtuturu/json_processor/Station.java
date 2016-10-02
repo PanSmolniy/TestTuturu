@@ -6,12 +6,12 @@ import org.json.JSONObject;
 
 public class Station {
 
-    JSONObject obj;
-    String name;
-    String city;
-    String district;
-    String region;
-    String country;
+    private JSONObject obj;
+    private String name;
+    private String city;
+    private String district;
+    private String region;
+    private String country;
 
     public Station(JSONObject obj) {
         this.obj = obj;
@@ -31,8 +31,6 @@ public class Station {
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public String toString() {

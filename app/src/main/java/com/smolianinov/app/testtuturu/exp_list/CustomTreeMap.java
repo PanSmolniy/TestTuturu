@@ -15,8 +15,7 @@ public class CustomTreeMap<K, V> extends TreeMap<K, V> {
         return entry.getValue();
     }
 
-    public K getKey(int i)
-    {
+    public K getKey(int i) {
         Map.Entry<K, V> entry = this.getEntry(i);
         if (entry == null) return null;
 

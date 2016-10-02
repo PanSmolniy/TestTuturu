@@ -10,4 +10,7 @@
     <string name="station_country"><b>Country:</b> %s</string>
 
     <string name="when">When</string>
+    <string name="set_date">Set date</string>
+    <string name="discard">Discard</string>
+    <string name="copyright">© Dmitry Smolianinov, 2016</string>
 </resources>

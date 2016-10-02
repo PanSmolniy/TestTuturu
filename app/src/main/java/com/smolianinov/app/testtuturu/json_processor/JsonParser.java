@@ -2,11 +2,9 @@ package com.smolianinov.app.testtuturu.json_processor;
 
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.smolianinov.app.testtuturu.exp_list.CustomTreeMap;
-import com.smolianinov.app.testtuturu.fragments.StationsFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,12 +15,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.fragment;
-
 public class JsonParser
 {
-    private JSONArray stationsFrom;
-    private JSONArray stationsTo;
+    public JSONArray stationsFrom;
+    public JSONArray stationsTo;
 
     public List<String> listFrom = new ArrayList<>();
     public List<String> listTo = new ArrayList<>();
@@ -43,58 +39,27 @@ public class JsonParser
         try {
             JSONArray [] arr = parseJson();
             stationsFrom = arr[0];
-            //fillStation(listFrom, stationsFrom);
             stationsTo = arr[1];
-            //fillStation(listTo, stationsTo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
+    public void fillStations(List<String> stations, JSONArray array) throws JSONException {
+        //JSONArray stationsList = array.getJSONArray(JsonConstants.STATIONS);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
+            JSONArray arr = obj.getJSONArray(JsonConstants.STATIONS);
 
-
-    /*private void fillStation(final List<String> stations, final JSONArray jsonArray) throws JSONException {
-
-        //stations.add(new Station((JSONObject) jsonArray.get(i)).toString());
-        new AsyncTask<Void, Void, Void>() {
-
-            //CustomTreeMap<String, List<JSONObject>> stations;
-            @Override
-            protected Void doInBackground(Void... unusedParams) {
-                // TODO: do your database stuff
-
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
-                    try {
-                        stations.add(new Station((JSONObject) jsonArray.get(i)).toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                return null;
+            for (int j = 0; j < arr.length(); j++)
+            {
+                stations.add(new Station((JSONObject) arr.get(j)).toString());
             }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
-                //fragment
-
-                Toast.makeText(activity, "Finished From length: " + listFrom.size() + "To length: "
-                        + listTo.size() + "Frist word: " + listFrom.get(0), Toast.LENGTH_LONG).show();
-
-
-
-                super.onPostExecute(aVoid);
-            }
-        }.execute();
-
-    }*/
+        }
+    }
 
     public CustomTreeMap<String, List<JSONObject>> orderData() throws JSONException {
-
-        //JSONArray [] arr = parseJson();
 
         CustomTreeMap<String, List<JSONObject>> result = new CustomTreeMap<>();
 
@@ -109,7 +74,6 @@ public class JsonParser
             List<JSONObject> value = new ArrayList<>();
 
             JSONObject obj = stationsFrom.getJSONObject(i);
-            //listFrom.add(new Station(obj).toString());
             countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
             countryCity.append(", ");
             countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
@@ -121,7 +85,7 @@ public class JsonParser
             {
                 JSONObject object = (JSONObject) stations.get(j);
                 value.add(object);
-                listFrom.add(new Station(object).toString());
+                //listFrom.add(new Station(object).toString());
                 stationIds.add((object).getInt(JsonConstants.STATION_ID));
             }
 
@@ -133,7 +97,7 @@ public class JsonParser
     }
 
     private String loadJSONFromAsset() {
-        String json = null;
+        String json;
         try {
 
             InputStream is = activity.getAssets().open("allStations.json");
@@ -161,8 +125,6 @@ public class JsonParser
 
     private JSONArray[] parseJson() throws JSONException {
 
-        //List<JSONObject> stationsFrom = new ArrayList<>();
-        //List<JSONObject> stationsTo = new ArrayList<>();
         JSONArray citiesFromcitiesTo[] = new JSONArray[2];
         JSONArray citiesFromJSONArr;
         JSONArray citiesToJSONArr;
@@ -173,29 +135,6 @@ public class JsonParser
 
         citiesFromcitiesTo[0] = citiesFromJSONArr;
         citiesFromcitiesTo[1] = citiesToJSONArr;
-
-       /* Log.d("CitiesFromLength", citiesFromJSONArr.length()+"");
-        Log.d("CitiesToLength", citiesToJSONArr.length()+"");
-        Log.d("TotalLength", citiesFromJSONArr.length() + citiesToJSONArr.length() + "");
-
-        Set<JSONObject> jsonset = new HashSet<>();
-
-        List<JSONObject> lfrom = new ArrayList<>();
-        List<JSONObject> lto = new ArrayList<>();
-
-        for (int i = 0; i < citiesFromJSONArr.length(); i++)
-        {
-            lfrom.add(citiesFromJSONArr.getJSONObject(i));
-        }
-        for (int i = 0; i < citiesToJSONArr.length(); i++)
-        {
-            lto.add(citiesToJSONArr.getJSONObject(i));
-        }
-
-        jsonset.addAll(lfrom);
-        jsonset.addAll(lto);
-
-        Log.d("SetLength", jsonset.size() + "");*/
 
         return citiesFromcitiesTo;
     }
@@ -222,7 +161,7 @@ public class JsonParser
                 JSONArray stations = obj.getJSONArray(JsonConstants.STATIONS);
 
                 for (int j = 0; j < stations.length(); j++) {
-                    listTo.add(new Station((JSONObject) stations.get(j)).toString());
+                    //listTo.add(new Station((JSONObject) stations.get(j)).toString());
                     value.add((JSONObject) stations.get(j));
                     stationIds.add(((JSONObject) stations.get(j)).getInt(JsonConstants.STATION_ID));
                 }
@@ -239,7 +178,7 @@ public class JsonParser
                     int stationId = stations.getJSONObject(j).getInt(JsonConstants.STATION_ID);
                     if (!stationIds.contains(stationId)) {
                         value.add((JSONObject) stations.get(j));
-                        listTo.add(new Station((JSONObject) stations.get(j)).toString());
+                        //listTo.add(new Station((JSONObject) stations.get(j)).toString());
                     }
                 }
             }
@@ -247,11 +186,5 @@ public class JsonParser
         }
         return result;
     }
-
-
-
-
-
-
 }
 

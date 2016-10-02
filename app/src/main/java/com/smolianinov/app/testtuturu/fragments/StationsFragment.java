@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.smolianinov.app.testtuturu.dialogs.ChooseDateDialog;
@@ -24,16 +23,10 @@ import com.smolianinov.app.testtuturu.exp_list.ExpListAdapter;
 import com.smolianinov.app.testtuturu.R;
 import com.smolianinov.app.testtuturu.json_processor.JsonConstants;
 import com.smolianinov.app.testtuturu.json_processor.JsonParser;
-import com.smolianinov.app.testtuturu.json_processor.Station;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.id.list;
 
 
 public class StationsFragment extends Fragment {
@@ -89,16 +82,6 @@ public class StationsFragment extends Fragment {
 
             }
         });
-
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("11111");
-        list.add("111121312");
-        list.add("112312");
-        list.add("2131");
-        list.add("11231235");
-
-
         view.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, stations));
     }
 
@@ -160,13 +143,15 @@ public class StationsFragment extends Fragment {
             protected Void doInBackground(Void... unusedParams) {
                 // TODO: do your database stuff
 
-
-
                 try {
                     stations = parser.orderData();
+                    parser.fillStations(parser.listFrom, parser.stationsFrom);
+                    parser.fillStations(parser.listTo, parser.stationsTo);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
 
                 return null;
             }
@@ -174,12 +159,9 @@ public class StationsFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                initializeListView(v, stations);
+                Log.d("AZAZA", parser.listFrom.size() + " " + parser.listTo.size());
 
-                Toast.makeText(getActivity(), "Finished From length: " + parser.listFrom.size() + "To length: "
-                        + parser.listTo.size() + "Frist word: " + parser.listFrom.get(0), Toast.LENGTH_LONG).show();
-                Log.d("AZAZA", "Finished From length: " + parser.listFrom.size() + " To length: "
-                        + parser.listTo.size() + " Frist word: " + parser.listFrom.get(0) + " " + parser.listFrom.get(1));
+                initializeListView(v, stations);
 
                 super.onPostExecute(aVoid);
             }
