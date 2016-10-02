@@ -11,9 +11,11 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 
+import com.smolianinov.app.testtuturu.DetailedInfoDialog;
 import com.smolianinov.app.testtuturu.exp_list.CustomTreeMap;
 import com.smolianinov.app.testtuturu.exp_list.ExpListAdapter;
 import com.smolianinov.app.testtuturu.R;
+import com.smolianinov.app.testtuturu.json_processor.JsonConstants;
 import com.smolianinov.app.testtuturu.json_processor.JsonParser;
 
 import org.json.JSONArray;
@@ -27,11 +29,14 @@ import java.util.List;
 public class StationsFragment extends Fragment {
 
     private JsonParser parser;
+    ExpandableListView listView;
+    private DetailedInfoDialog dialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.stations_chooser_fragment, container, false);
+        dialog = new DetailedInfoDialog(getContext());
         //initializeListView(rootView, returnStations());
 
 
@@ -60,10 +65,38 @@ public class StationsFragment extends Fragment {
 
     private void initializeListView(View view, CustomTreeMap<String, List<JSONObject>> stations)
     {
-        ExpandableListView listView = (ExpandableListView)view.findViewById(R.id.expandableListView);
+        listView = (ExpandableListView)view.findViewById(R.id.expandableListView);
+
 
         ExpListAdapter adapter = new ExpListAdapter(getActivity().getApplicationContext(), stations);
         listView.setAdapter(adapter);
+        setLVChildClickListener(adapter);
+    }
+
+    private void setLVChildClickListener(final ExpListAdapter adapter)
+    {
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                String arr[] = new String[4];
+
+                JSONObject obj = (JSONObject) adapter.getChild(groupPosition, childPosition);
+                try {
+                    arr[0] = obj.getString(JsonConstants.STATION_NAME);
+                    arr[1] = obj.getString(JsonConstants.STATION_CITY);
+                    arr[2] = obj.getString(JsonConstants.STATION_REGION);
+                    arr[3] = obj.getString(JsonConstants.STATION_COUNTRY);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                dialog.setArr(arr);
+                //dialog.updateTextView();
+                //dialog.update();
+
+                dialog.show();
+                return false;
+            }
+        });
     }
 
     public static StationsFragment newInstance() {

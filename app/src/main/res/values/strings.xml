@@ -3,4 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="version">Version: %s</string>
+    
+    <string name="station_name"><b>Station name:</b> %s</string>
+    <string name="station_city"><b>City:</b> %s</string>
+    <string name="station_region"><b>Region:</b> %s</string>
+    <string name="station_country"><b>Country:</b> %s</string>
 </resources>

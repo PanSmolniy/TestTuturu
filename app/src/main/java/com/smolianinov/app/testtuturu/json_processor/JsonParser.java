@@ -44,21 +44,21 @@ public class JsonParser
 
     public CustomTreeMap<String, List<JSONObject>> orderData() throws JSONException {
 
-        JSONArray [] arr = parseJson();
+        //JSONArray [] arr = parseJson();
 
         CustomTreeMap<String, List<JSONObject>> result = new CustomTreeMap<>();
 
         List<Integer> stationIds = new ArrayList<>();
         List<Integer> cityIds = new ArrayList<>();
 
-        for (int i = 0; i < arr[0].length(); i++)
+        for (int i = 0; i < StationsFrom.length(); i++)
         {
             StringBuilder countryCity = new StringBuilder();
 
             String key = "";
             List<JSONObject> value = new ArrayList<>();
 
-            JSONObject obj = arr[0].getJSONObject(i);
+            JSONObject obj = StationsFrom.getJSONObject(i);
             countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
             countryCity.append(", ");
             countryCity.append(obj.getString(JsonConstants.CITY_TITLE));
@@ -76,7 +76,7 @@ public class JsonParser
 
             result.put(key, value);
         }
-        return merge(cityIds, stationIds, arr, result);
+        return merge(cityIds, stationIds, result);
     }
 
     private String loadJSONFromAsset() {
@@ -148,15 +148,15 @@ public class JsonParser
     }
 
     private CustomTreeMap<String, List<JSONObject>> merge
-            (List<Integer> cityIds, List<Integer> stationIds, JSONArray[] arr, CustomTreeMap<String, List<JSONObject>> map)
+            (List<Integer> cityIds, List<Integer> stationIds, CustomTreeMap<String, List<JSONObject>> map)
             throws JSONException {
 
         CustomTreeMap<String, List<JSONObject>> result = map;
-        for (int i = 0; i < arr[1].length(); i++) {
+        for (int i = 0; i < StationsTo.length(); i++) {
             StringBuilder countryCity = new StringBuilder();
             String key = "";
             List<JSONObject> value = new ArrayList<>();
-            JSONObject obj = arr[1].getJSONObject(i);
+            JSONObject obj = StationsTo.getJSONObject(i);
 
             countryCity.append(obj.getString(JsonConstants.COUNTRY_TITLE));
             countryCity.append(", ");
