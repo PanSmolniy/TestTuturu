@@ -1,17 +1,20 @@
 package com.smolianinov.app.testtuturu.fragments;
 
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.smolianinov.app.testtuturu.dialogs.ChooseDateDialog;
@@ -21,11 +24,16 @@ import com.smolianinov.app.testtuturu.exp_list.ExpListAdapter;
 import com.smolianinov.app.testtuturu.R;
 import com.smolianinov.app.testtuturu.json_processor.JsonConstants;
 import com.smolianinov.app.testtuturu.json_processor.JsonParser;
+import com.smolianinov.app.testtuturu.json_processor.Station;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.id.list;
 
 
 public class StationsFragment extends Fragment {
@@ -36,79 +44,72 @@ public class StationsFragment extends Fragment {
     private ChooseDateDialog chooseDate;
     public TextView date;
 
+    public AutoCompleteTextView from;
+    public AutoCompleteTextView where;
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.stations_chooser_fragment, container, false);
 
-        //date = (TextView) getContext().findViewById(R.id.date_text);
         date = (TextView) rootView.findViewById(R.id.date_text);
         chooseDate = new ChooseDateDialog(getActivity(), this);
         setDateOnClick();
 
         dialog = new DetailedInfoDialog(getContext());
-        //initializeListView(rootView, returnStations());
-
-
         parser = new JsonParser(getActivity());
 
         processJsonData(rootView);
 
+        from = (AutoCompleteTextView) rootView.findViewById(R.id.from_actw);
+        setAutocompleteAction(from, parser.getListFrom());
+        where = (AutoCompleteTextView) rootView.findViewById(R.id.where_actw);
+        setAutocompleteAction(where, parser.getListTo());
 
         return rootView;
+    }
+
+    private void setAutocompleteAction(AutoCompleteTextView view, List<String> stations)
+    {
+        view.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("11111");
+        list.add("111121312");
+        list.add("112312");
+        list.add("2131");
+        list.add("11231235");
+
+
+        view.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, stations));
     }
 
     private void setDateOnClick() {
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               inflateDateDialog();
+                chooseDate.show();;
             }
         });
     }
-
-    private void inflateDateDialog()
-    {
-
-        /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
-            }
-        };*/
-
-        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.choose_date_popup, null);
-        dialogBuilder.setView(dialogView);
-
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();*/
-
-        chooseDate.show();
-    }
-
-    /*private CustomTreeMap<String, List<Object>> returnStations(CustomTreeMap<String, List<Object>> stations)
-    {
-
-        CustomTreeMap<String, List<Obj
-        stations.put("Albania", null);
-        stations.put("Armenia", null);
-        stations.put("Cameroon", null);
-        stations.put("Ukraine", null);
-        stations.put("Azerbaijan", null);
-        stations.put("USA", null);
-        stations.put("Russia", null);
-        stations.put("Belarus", null);
-        return stations;
-    }*/
 
     private void initializeListView(View view, CustomTreeMap<String, List<JSONObject>> stations)
     {
@@ -137,8 +138,6 @@ public class StationsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 dialog.setArr(arr);
-                //dialog.updateTextView();
-                //dialog.update();
 
                 dialog.show();
                 return false;
@@ -156,8 +155,6 @@ public class StationsFragment extends Fragment {
 
         new AsyncTask<Void, Void, Void>() {
 
-
-            //JSONArray[] arr;
             CustomTreeMap<String, List<JSONObject>> stations;
             @Override
             protected Void doInBackground(Void... unusedParams) {
@@ -166,7 +163,6 @@ public class StationsFragment extends Fragment {
 
 
                 try {
-                    //arr = parser.parseJson();
                     stations = parser.orderData();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -180,19 +176,14 @@ public class StationsFragment extends Fragment {
 
                 initializeListView(v, stations);
 
-                /*Toast.makeText(getActivity(), "CitiesFrom length is " + arr[0].length() + " " +
-                        "CitiesTo length is " + arr[1].length(), Toast.LENGTH_LONG).show();*/
+                Toast.makeText(getActivity(), "Finished From length: " + parser.listFrom.size() + "To length: "
+                        + parser.listTo.size() + "Frist word: " + parser.listFrom.get(0), Toast.LENGTH_LONG).show();
+                Log.d("AZAZA", "Finished From length: " + parser.listFrom.size() + " To length: "
+                        + parser.listTo.size() + " Frist word: " + parser.listFrom.get(0) + " " + parser.listFrom.get(1));
+
                 super.onPostExecute(aVoid);
             }
         }.execute();
 
-
-       /* try {
-            JSONArray[] arr = parser.parseJson();
-            Toast.makeText(this, "CitiesFrom length is " + arr[0].length() + " " +
-                    "CitiesTo length is " +arr[1].length(), Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
     }
 }

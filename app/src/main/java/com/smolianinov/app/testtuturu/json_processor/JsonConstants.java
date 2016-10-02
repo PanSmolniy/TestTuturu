@@ -17,6 +17,7 @@ public interface JsonConstants {
     String STATION_CITY = "cityTitle";
     String STATION_REGION = "regionTitle";
     String STATION_COUNTRY = "countryTitle";
+    String STATION_DISTRICT = "districtTitle";
 
 
 

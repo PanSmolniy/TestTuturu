@@ -62,8 +62,4 @@ public class ChooseDateDialog extends Dialog implements View.OnClickListener
 
     }
 
-
-
-
-
 }

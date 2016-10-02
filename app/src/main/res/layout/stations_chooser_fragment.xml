@@ -3,34 +3,43 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.07">
+        android:layout_weight="0.07"
+        android:orientation="horizontal"
+        >
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
         <AutoCompleteTextView
-            android:text="From"
-            android:layout_width="wrap_content"
+            android:text=""
+            android:hint="From"
+            android:layout_width="match_parent"
+            android:paddingRight="12dp"
             android:layout_height="wrap_content"
-            android:id="@+id/autoCompleteTextView9"
-            android:layout_marginLeft="73dp"
-            android:layout_marginStart="73dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/from_actw"
+            android:layout_centerInParent="true" />
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
         <AutoCompleteTextView
-            android:text="Where"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/autoCompleteTextView8"
-            android:layout_marginRight="73dp"
-            android:layout_marginEnd="73dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
 
-    </RelativeLayout>
+            android:text=""
+            android:hint="Where"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:id="@+id/where_actw"
+            android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
